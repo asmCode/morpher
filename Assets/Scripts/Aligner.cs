@@ -45,6 +45,34 @@ public class Aligner : MonoBehaviour
         }
     }
 
+    [MenuItem("Align/Circle")]
+    public static void Circle()
+    {
+        var count = Selection.gameObjects.Length;
+
+        if (count < 1)
+            return;
+
+        var selected = new GameObject[count];
+        System.Array.Copy(Selection.gameObjects, selected, count);
+
+        System.Array.Sort(selected, (a, b) => { return a.name.CompareTo(b.name); });
+
+        var radius = selected[0].transform.localPosition.magnitude;
+      
+        float angleStep = (Mathf.PI * 2.0f) / (count);
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 pos = new Vector3();
+            pos.x = Mathf.Sin(angleStep * i) * radius;
+            pos.y = Mathf.Cos(angleStep * i) * radius;
+            pos.z = 0.0f;
+
+            selected[i].transform.localPosition = pos;
+        }
+    }
+
     [MenuItem("Align/Rename")]
     public static void Rename()
     {
