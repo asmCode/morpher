@@ -25,7 +25,7 @@ public class ShapeRenderer : MonoBehaviour
 
             child.localScale = new Vector3(1.0f / m_canvas.scaleFactor, direction.magnitude / m_canvas.scaleFactor, 1.0f);
             child.up = direction;
-            child.position = points[i];
+            child.localPosition = points[i];
         }
     }
 }
