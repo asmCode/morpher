@@ -5,21 +5,27 @@ using UnityEngine;
 public class Gameplay : MonoBehaviour
 {
     public ShapeRenderer m_shapeRenderer;
+    public Shape m_shapeRectangle;
     public Shape m_shapeCircle;
+    public Shape m_shapeHex;
     public Shape m_shapeStar;
 
-    public float m_starOrCircle = 0.0f;
+    public float m_weightRect = 1.0f;
+    public float m_weightCircle = 0.0f;
+    public float m_weightHex = 0.0f;
+    public float m_weightStar = 0.0f;
 
     void Start()
     {
-        // m_shapeRenderer.DrawShape(m_shape.Points, 4.0f);
     }
 
     void Update()
     {
         ShapeMorpher morpher = new ShapeMorpher();
-        morpher.AddShape(m_shapeCircle.Points, m_starOrCircle);
-        morpher.AddShape(m_shapeStar.Points, 1.0f - m_starOrCircle);
+        morpher.AddShape(m_shapeRectangle.Points, m_weightRect);
+        morpher.AddShape(m_shapeCircle.Points, m_weightCircle);
+        morpher.AddShape(m_shapeHex.Points, m_weightHex);
+        morpher.AddShape(m_shapeStar.Points, m_weightStar);
 
         m_shapeRenderer.DrawShape(morpher.Points, 4.0f);
     }
