@@ -5,14 +5,13 @@ using UnityEngine;
 public class ShapePoint
 {
     private Vector3 m_point;
-    private Vector3 m_oppisiteCorner1;
-    private Vector3 m_oppisiteCorner2;
 
-    public ShapePoint(Vector3 point, Vector3 oppisiteCorner1, Vector3 oppisiteCorner2)
+    private List<Line> m_oppositeEdges = new List<Line>();
+
+    public ShapePoint(Vector3 point, List<Line> oppositeEdges)
     {
         m_point = point;
-        m_oppisiteCorner1 = oppisiteCorner1;
-        m_oppisiteCorner2 = oppisiteCorner2;
+        m_oppositeEdges = oppositeEdges;
     }
 
     public float GetWeight(Vector3 point)
@@ -21,12 +20,18 @@ public class ShapePoint
             return 1.0f;
 
         var line1 = new Line(m_point, point);
-        var line2 = new Line(m_oppisiteCorner1, m_oppisiteCorner2);
+        var closestIntersectionPoint = new Vector3(9999, 9999, 9999);
 
-        Vector3 intersectionPoint = new Vector3();
-        if (!Line.GetIntersection(line1, line2, ref intersectionPoint))
-            return 0.0f;
+        foreach (var line2 in m_oppositeEdges)
+        {
+            Vector3 intersectionPoint = new Vector3();
+            if (!Line.GetIntersection(line1, line2, ref intersectionPoint))
+                continue;
 
-        return 1.0f - Vector3.Distance(m_point, point) / Vector3.Distance(intersectionPoint, m_point);
+            if (Vector3.Distance(point, intersectionPoint) < Vector3.Distance(point, closestIntersectionPoint))
+                closestIntersectionPoint = intersectionPoint;
+        }
+
+        return 1.0f - Vector3.Distance(m_point, point) / Vector3.Distance(closestIntersectionPoint, m_point);
     }
 }
