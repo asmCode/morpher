@@ -17,22 +17,16 @@ public class ShapePoint
 
     public float GetWeight(Vector3 point)
     {
-        if (Vector3.Distance(point, m_point) <= Mathf.Epsilon)
+        if (Vector3.Distance(m_point, point) < Mathf.Epsilon)
             return 1.0f;
 
-        var s1 = m_point;
-        var d1 = (point - m_point).normalized;
+        var line1 = new Line(m_point, point);
+        var line2 = new Line(m_oppisiteCorner1, m_oppisiteCorner2);
 
-        var s2 = m_oppisiteCorner1;
-        var d2 = (m_oppisiteCorner2 - m_oppisiteCorner1).normalized;
+        Vector3 intersectionPoint = new Vector3();
+        if (!Line.GetIntersection(line1, line2, ref intersectionPoint))
+            return 0.0f;
 
-        if (Vector3.Distance(d2, d1) <= Mathf.Epsilon)
-            return -1;
-
-        float l1 = Vector3.Cross(m_oppisiteCorner1 - m_point, d2).magnitude / Vector3.Cross(d1, d2).magnitude;
-
-        var maxDistancePoint = s1 + d1 * l1;
-        
-        return 1.0f - Vector3.Distance(m_point, point) / Vector3.Distance(maxDistancePoint, m_point);
+        return 1.0f - Vector3.Distance(m_point, point) / Vector3.Distance(intersectionPoint, m_point);
     }
 }
