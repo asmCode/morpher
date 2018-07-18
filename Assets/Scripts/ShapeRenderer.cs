@@ -24,7 +24,8 @@ public class ShapeRenderer : MonoBehaviour
 
             Vector3 direction = points[(i + 1) % points.Length] - points[i];
 
-            child.localScale = new Vector3(6.0f / m_canvas.scaleFactor, (direction.magnitude * scale) / m_canvas.scaleFactor, 1.0f);
+            // child.localScale = new Vector3(6.0f / m_canvas.sca scaleFactor, (direction.magnitude * scale) / m_canvas.scaleFactor, 1.0f);
+            child.localScale = new Vector3(6.0f, (direction.magnitude * scale) / 1.0f, 1.0f);
             child.up = direction;
             child.localPosition = points[i] * scale;
         }

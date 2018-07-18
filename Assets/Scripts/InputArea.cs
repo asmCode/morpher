@@ -6,6 +6,8 @@ public class InputArea : MonoBehaviour
 {
     public Transform m_cursor;
     public Transform m_cursor2;
+    public Transform m_cursor3;
+    public Canvas canvas;
 
     private RectTransform m_rectTransform;
     private bool m_initialized;
@@ -29,11 +31,8 @@ public class InputArea : MonoBehaviour
             return;
 
         m_rectTransform = GetComponent<RectTransform>();
-
-        Vector3[] worldCorners = new Vector3[4];
-        m_rectTransform.GetWorldCorners(worldCorners);
-        m_bottomLeftCorner = worldCorners[0];
-        m_topRightCorner = worldCorners[2];
+        m_bottomLeftCorner = new Vector3(m_rectTransform.rect.xMin, m_rectTransform.rect.yMin);
+        m_topRightCorner = new Vector3(m_rectTransform.rect.xMax, m_rectTransform.rect.yMax);
 
         m_initialized = true;
     }
@@ -61,11 +60,20 @@ public class InputArea : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var position = Input.mousePosition;
-        position.x = Mathf.Clamp(position.x, m_bottomLeftCorner.x, m_topRightCorner.x);
-        position.y = Mathf.Clamp(position.y, m_bottomLeftCorner.y, m_topRightCorner.y);
+        m_bottomLeftCorner = new Vector3(m_rectTransform.rect.xMin, m_rectTransform.rect.yMin);
+        m_topRightCorner = new Vector3(m_rectTransform.rect.xMax, m_rectTransform.rect.yMax);
 
-        m_cursor.position = position;
+        // var position = Input.mousePosition;
+
+        var mousePosition2d = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        var position = new Vector2();
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(m_rectTransform, mousePosition2d, Camera.main, out position);
+
+        position.x = Mathf.Clamp(position.x, m_rectTransform.rect.xMin, m_rectTransform.rect.xMax);
+        position.y = Mathf.Clamp(position.y, m_rectTransform.rect.yMin, m_rectTransform.rect.yMax);
+
+        m_cursor.localPosition = position;
 
         CursorPosition = position;
     }

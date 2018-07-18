@@ -47,6 +47,23 @@ public class Gameplay : MonoBehaviour
 
     void Update()
     {
+        var bottomLeft = m_inputArea.GetBottomLeftCorner();
+        var topRight = m_inputArea.GetTopRightCorner();
+        var topLeft = new Vector3(bottomLeft.x, topRight.y, 0.0f);
+        var bottomRight = new Vector3(topRight.x, bottomLeft.y, 0.0f);
+
+        var pointAOppositeEdges = new List<Line>() { new Line(topLeft, topRight), new Line(topRight, bottomRight) };
+        m_rectShapePoint = new ShapePoint(bottomLeft, pointAOppositeEdges);
+
+        var pointBOppositeEdges = new List<Line>() { new Line(bottomLeft, bottomRight), new Line(bottomRight, topRight) };
+        m_circleShapePoint = new ShapePoint(topLeft, pointBOppositeEdges);
+
+        var pointCOppositeEdges = new List<Line>() { new Line(bottomRight, bottomLeft), new Line(bottomLeft, topLeft) };
+        m_hexShapePoint = new ShapePoint(topRight, pointCOppositeEdges);
+
+        var pointDOppositeEdges = new List<Line>() { new Line(bottomLeft, topLeft), new Line(topLeft, topRight) };
+        m_starShapePoint = new ShapePoint(bottomRight, pointDOppositeEdges);
+
         m_weightRect = m_rectShapePoint.GetWeight(m_inputArea.CursorPosition);
         m_weightCircle = m_circleShapePoint.GetWeight(m_inputArea.CursorPosition);
         m_weightHex = m_hexShapePoint.GetWeight(m_inputArea.CursorPosition);
@@ -64,7 +81,7 @@ public class Gameplay : MonoBehaviour
         morpher.AddShape(m_shapeHex.Points, m_weightHex);
         morpher.AddShape(m_shapeStar.Points, m_weightStar);
 
-        m_shapeRenderer.DrawShape(morpher.Points, 4.0f);
+        m_shapeRenderer.DrawShape(morpher.Points, 5.0f);
 
 
         // m_inputArea.m_cursor2.position = m_inputArea.GetBottomLeftCorner() + (m_inputArea.CursorPosition - m_inputArea.GetBottomLeftCorner()).normalized * m_weightRect;
