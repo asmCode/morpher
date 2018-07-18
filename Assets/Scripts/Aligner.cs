@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -59,7 +60,7 @@ public class Aligner : MonoBehaviour
         System.Array.Sort(selected, (a, b) => { return a.name.CompareTo(b.name); });
 
         var radius = selected[0].transform.localPosition.magnitude;
-      
+
         float angleStep = (Mathf.PI * 2.0f) / (count);
 
         for (int i = 0; i < count; i++)
@@ -100,3 +101,4 @@ public class Aligner : MonoBehaviour
         }
     }
 }
+#endif
