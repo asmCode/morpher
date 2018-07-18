@@ -18,6 +18,7 @@ public class ShapeRenderer : MonoBehaviour
     public void DrawShape(Vector3[] points, float scale)
     {
         for (int i = 0; i < points.Length; i++)
+        // for (int i = 0; i < 10; i++)
         {
             var child = transform.GetChild(i);
 

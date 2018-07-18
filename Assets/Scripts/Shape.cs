@@ -21,5 +21,16 @@ public class Shape : MonoBehaviour
 
         for (int i = 0; i < Points.Length; i++)
             Points[i] -= center;
+
+        System.Array.Sort(Points, (pointA, pointB) =>
+        {
+            var directionA = (pointA - center).normalized;
+            var directionB = (pointB - center).normalized;
+
+            var angleA = Vector3.SignedAngle(directionA, Vector3.up, Vector3.forward);
+            var angleB = Vector3.SignedAngle(directionB, Vector3.up, Vector3.forward);
+
+            return angleA.CompareTo(angleB);
+        });
     }
 }
